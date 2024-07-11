@@ -15,5 +15,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.MapHub<SortnigHub>("sort-hub");
 
 app.Run();
