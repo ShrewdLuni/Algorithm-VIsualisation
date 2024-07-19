@@ -12,42 +12,43 @@ public sealed class SortnigHub : Hub
         await Clients.Caller.SendAsync("ReceiveMessage", $"{Context.ConnectionId}: {message}");
     }
 
-    public async Task InsertionSort(int[] arr)
+    public async Task InsertionSort(int[] arr, int delay)
     {
-        Console.WriteLine(Context.ConnectionId + " invoke InsertionSort " + Clients.Caller);
+        Console.WriteLine(Context.ConnectionId + " invoke InsertionSort ,delay is:" + delay);
         for (int i = 1; i < arr.Length; i++)
         {
             for (int j = i - 1; j >= 0 && arr[j + 1] < arr[j]; j--)
             {
                 (arr[j + 1], arr[j]) = (arr[j], arr[j + 1]);
-                Thread.Sleep(50);
-                await Clients.Caller.SendAsync("SortStep", arr, j);
+                Thread.Sleep(delay);
+                Console.WriteLine(delay);
+                await Clients.Caller.SendAsync("SortStep", arr, j, Context.ConnectionId);
             }
         }
         await Clients.Caller.SendAsync("SortComplete");
     }
 
-    public async Task MergeSort(int[] arr)
+    public async Task MergeSort(int[] arr, int delay)
     {
         Console.WriteLine(Context.ConnectionId + " invoke MergeSort " + Clients.Caller);
-        await MergeSortHelper(arr, 0, arr.Length - 1);
+        await MergeSortHelper(arr, 0, arr.Length - 1,delay);
         await Clients.Caller.SendAsync("SortComplete");
     }
 
-    private async Task MergeSortHelper(int[] arr, int left, int right)
+    private async Task MergeSortHelper(int[] arr, int left, int right, int delay)
     {
         if (left < right)
         {
             int middle = (left + right) / 2;
 
-            await MergeSortHelper(arr, left, middle);
-            await MergeSortHelper(arr, middle + 1, right);
+            await MergeSortHelper(arr, left, middle,delay);
+            await MergeSortHelper(arr, middle + 1, right,delay);
 
-            await Merge(arr, left, middle, right);
+            await Merge(arr, left, middle, right, delay);
         }
     }
 
-    private async Task Merge(int[] arr, int left, int middle, int right)
+    private async Task Merge(int[] arr, int left, int middle, int right, int delay)
     {
         int leftArrayLength = middle - left + 1;
         int rightArrayLength = right - middle;
@@ -76,8 +77,8 @@ public sealed class SortnigHub : Hub
                 rightIndex++;
             }
             mergeIndex++;
-            Thread.Sleep(50);
-            await Clients.Caller.SendAsync("SortStep", arr, mergeIndex);
+            Thread.Sleep(delay);
+            await Clients.Caller.SendAsync("SortStep", arr, mergeIndex, Context.ConnectionId);
         }
 
         while (leftIndex < leftArrayLength)
@@ -85,8 +86,8 @@ public sealed class SortnigHub : Hub
             arr[mergeIndex] = leftArray[leftIndex];
             leftIndex++;
             mergeIndex++;
-            Thread.Sleep(50);
-            await Clients.Caller.SendAsync("SortStep", arr, mergeIndex);
+            Thread.Sleep(delay);
+            await Clients.Caller.SendAsync("SortStep", arr, mergeIndex, Context.ConnectionId);
         }
 
         while (rightIndex < rightArrayLength)
@@ -94,8 +95,8 @@ public sealed class SortnigHub : Hub
             arr[mergeIndex] = rightArray[rightIndex];
             rightIndex++;
             mergeIndex++;
-            Thread.Sleep(50);
-            await Clients.Caller.SendAsync("SortStep", arr, mergeIndex);
+            Thread.Sleep(delay);
+            await Clients.Caller.SendAsync("SortStep", arr, mergeIndex, Context.ConnectionId);
         }
     }
 }
