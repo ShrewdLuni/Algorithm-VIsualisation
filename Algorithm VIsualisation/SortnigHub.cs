@@ -12,6 +12,18 @@ public sealed class SortnigHub : Hub
         await Clients.Caller.SendAsync("ReceiveMessage", $"{Context.ConnectionId}: {message}");
     }
 
+    public async Task Shuffle(int[] arr, int delay)
+    {
+        var random = new Random();
+        for (int i = arr.Length - 1; i > 0; i--)
+        {
+            int index = random.Next(i + 1);
+            (arr[index], arr[i]) = (arr[i], arr[index]);
+            Thread.Sleep(delay);
+            await Clients.Caller.SendAsync("SortStep", arr, i, Context.ConnectionId);
+        }
+    }
+
     public async Task InsertionSort(int[] arr, int delay)
     {
         Console.WriteLine(Context.ConnectionId + " invoke InsertionSort ,delay is:" + delay);
