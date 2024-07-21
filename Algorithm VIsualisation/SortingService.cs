@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using System;
 using System.Buffers;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -10,7 +11,7 @@ namespace Algorithm_VIsualisation
         public static async Task ShuffleAsync(int[] arr, int delay, IClientProxy clientProxy)
         {
             var random = new Random();
-            for (int i = arr.Length - 1; i > 0; i--)
+            for (int i = 0;i < arr.Length; i++)
             {
                 int index = random.Next(i + 1);
                 (arr[index], arr[i]) = (arr[i], arr[index]);
