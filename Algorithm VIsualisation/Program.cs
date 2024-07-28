@@ -48,6 +48,6 @@ app.Use(async (context, next) =>
     }
 });
 
-app.MapHub<SortingHub>("sort");
+app.MapHub<SortingHub>("/sort");
 
 app.Run();
