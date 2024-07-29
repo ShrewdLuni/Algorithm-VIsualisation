@@ -122,4 +122,9 @@ public sealed class SortingHub : Hub
         if (delay > maxDelay || delay < minDelay)
             throw new ArgumentOutOfRangeException(nameof(delay), $"Delay must be between {minDelay} and {maxDelay} milliseconds. Given delay: {delay}");
     }
+
+    public static bool isValidConnection(string connectionID)
+    {
+        return _connectionTokens.ContainsKey(connectionID);
+    }
 }
