@@ -121,12 +121,11 @@ namespace Algorithm_VIsualisation
 
         private static async Task CountSortByDigitAsync(int[] arr, int exp, int delay, IClientProxy clientProxy, CancellationToken token)
         {
-            int n = arr.Length;
-            int[] output = new int[n];
+            int[] output = new int[arr.Length];
             int[] count = new int[10];
             for (int i = 0; i < 10; i++)
                 count[i] = 0;
-            for (int i = 0; i < n; i++)
+            for (int i = 0; i < arr.Length; i++)
             {
                 token.ThrowIfCancellationRequested();
                 int digit = (arr[i] / exp) % 10;
@@ -141,7 +140,7 @@ namespace Algorithm_VIsualisation
                 await Task.Delay(delay);
                 await clientProxy.SendAsync("SortStep", arr, i);
             }
-            for (int i = n - 1; i >= 0; i--)
+            for (int i = arr.Length - 1; i >= 0; i--)
             {
                 token.ThrowIfCancellationRequested();
                 int digit = (arr[i] / exp) % 10;
@@ -150,7 +149,7 @@ namespace Algorithm_VIsualisation
                 await Task.Delay(delay);
                 await clientProxy.SendAsync("SortStep", output, count[digit]);
             }
-            for (int i = 0; i < n; i++)
+            for (int i = 0; i < arr.Length; i++)
                 arr[i] = output[i];
         }
 
