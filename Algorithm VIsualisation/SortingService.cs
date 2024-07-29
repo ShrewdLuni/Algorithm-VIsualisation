@@ -250,6 +250,9 @@ namespace Algorithm_VIsualisation
                 await clientProxy.SendAsync("SortStep", output, position);
             }
 
+            for (int i = 0; i < arr.Length; i++)
+                arr[i] = output[i];
+
             await clientProxy.SendAsync("SortComplete");
         }
 
