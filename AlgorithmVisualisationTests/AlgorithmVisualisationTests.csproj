@@ -7,6 +7,10 @@
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+
+	<CollectCoverage>true</CollectCoverage>
+	<CoverletOutputFormat>lcov</CoverletOutputFormat>
+	<CoverletOutput>./lcov.info</CoverletOutput>
   </PropertyGroup>
 
   <ItemGroup>
